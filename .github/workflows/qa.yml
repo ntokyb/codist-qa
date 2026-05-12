@@ -39,8 +39,12 @@ jobs:
 
       - name: Run Playwright
         run: npx playwright test
-        # Set repo Actions variables (Settings → Variables) to point at staging, or rely on
-        # defaults in playwright.config.ts. Avoid passing empty env vars here — they override config.
+        env:
+          # Maemo Compliance — maemo-compliance.co.za
+          MAEMO_URL: ${{ secrets.MAEMO_COMPLIANCE_URL }}
+          MAEMO_API_URL: ${{ secrets.MAEMO_COMPLIANCE_API_URL }}
+        # Set repo Actions secrets for Maemo above; other products use defaults in playwright.config.ts
+        # unless you add more env entries. Avoid empty secrets — they override config defaults.
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4

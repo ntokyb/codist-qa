@@ -1,0 +1,42 @@
+name: Codist QA — Cross-product smoke tests
+
+on:
+  schedule:
+    - cron: '0 5 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  smoke-all-products:
+    name: Smoke tests — all products
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run all smoke tests
+        run: npx playwright test --grep @smoke --reporter=list
+        env:
+          CI: true
+          BILLABLE_URL: ${{ secrets.BILLABLE_URL }}
+          ENGINEIQ_URL: ${{ secrets.ENGINEIQ_URL }}
+          THERECORD_URL: ${{ secrets.THERECORD_URL }}
+          # Maemo Compliance — maemo-compliance.co.za
+          MAEMO_URL: ${{ secrets.MAEMO_COMPLIANCE_URL }}
+          MAEMO_API_URL: ${{ secrets.MAEMO_COMPLIANCE_API_URL }}
+          WARROOM_URL: ${{ secrets.WARROOM_URL }}
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: qa-smoke-report
+          path: playwright-report/

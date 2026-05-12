@@ -1,4 +1,8 @@
+import path from 'node:path';
+import { config as loadEnv } from 'dotenv';
 import { defineConfig, devices } from '@playwright/test';
+
+loadEnv({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
   testDir: './e2e',
@@ -53,6 +57,24 @@ export default defineConfig({
         baseURL:
           process.env.THERECORD_URL ?? 'https://therecord.co.za',
         ...devices['Desktop Chrome'],
+      },
+    },
+    {
+      name: 'maemo-compliance',
+      testDir: './e2e/maemo-compliance',
+      use: {
+        baseURL:
+          process.env.MAEMO_URL ?? 'https://maemo-compliance.co.za',
+        ...devices['Desktop Chrome'],
+      },
+    },
+    {
+      name: 'maemo-compliance-api',
+      testDir: './e2e/maemo-compliance',
+      testMatch: '**/smoke.spec.ts',
+      use: {
+        baseURL:
+          process.env.MAEMO_API_URL ?? 'https://api.maemo-compliance.co.za',
       },
     },
     {
