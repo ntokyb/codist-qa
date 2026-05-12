@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/unit/">
+    <Project Path="unit/Codist.QA.Backend.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/integration/">
+    <Project Path="integration/Codist.QA.Backend.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/worker/">
+    <Project Path="worker/Codist.QA.Backend.WorkerTests.csproj" />
+  </Folder>
+</Solution>
